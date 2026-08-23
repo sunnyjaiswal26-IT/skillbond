@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: skillbond-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=skillbond_db
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - skillbond-net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: skillbond-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGODB_HOST=mongodb
+      - MONGODB_PORT=27017
+      - MONGODB_DATABASE=skillbond_db
+    depends_on:
+      - mongodb
+    networks:
+      - skillbond-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: skillbond-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - skillbond-net
+
+networks:
+  skillbond-net:
+    driver: bridge
+
+volumes:
+  mongo_data:

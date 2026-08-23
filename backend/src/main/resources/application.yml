@@ -1,0 +1,27 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: skillbond-backend
+  data:
+    mongodb:
+      uri: mongodb://${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/${MONGODB_DATABASE:skillbond_db}
+      auto-index-creation: true
+
+skillbond:
+  app:
+    jwtSecret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    jwtExpirationMs: 86400000 # 24 hours
+    jwtRefreshExpirationMs: 604800000 # 7 days
+    cors:
+      allowed-origins: "http://localhost:5173,http://localhost:3000"
+
+logging:
+  level:
+    root: INFO
+    com.skillbond: DEBUG
+    org.springframework.data.mongodb: DEBUG
+    org.springframework.security: DEBUG
