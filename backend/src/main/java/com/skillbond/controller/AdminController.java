@@ -46,6 +46,11 @@ public class AdminController {
         return ResponseEntity.ok(adminService.updateFundingRequestStatus(requestId, status, adminNotes));
     }
 
+    @PostMapping("/funding-requests/{requestId}/recalculate-ai-score")
+    public ResponseEntity<FundingRequest> recalculateAiRiskScore(@PathVariable String requestId) {
+        return ResponseEntity.ok(adminService.recalculateAiRiskScore(requestId));
+    }
+
     @GetMapping("/analytics")
     public ResponseEntity<Map<String, Object>> getPlatformAnalytics() {
         return ResponseEntity.ok(adminService.getPlatformAnalytics());

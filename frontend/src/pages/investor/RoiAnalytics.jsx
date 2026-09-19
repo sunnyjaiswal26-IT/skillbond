@@ -17,7 +17,7 @@ const RoiAnalytics = () => {
     labels: ['Total Invested (₹)', 'Total Repaid (₹)'],
     datasets: [
       {
-        label: 'Capital Metrics (in ₹ Rupees)',
+        label: 'Capital Metrics',
         data: [analytics?.totalInvested || 150000, analytics?.totalRepaid || 18000],
         backgroundColor: ['#6366F1', '#10B981'],
         borderRadius: 8,
@@ -30,7 +30,7 @@ const RoiAnalytics = () => {
   return (
     <Box maxWidth="lg">
       <Typography variant="h4" sx={{ fontWeight: 800, mb: 1 }}>
-        ROI & Financial Analytics (₹ Rupees)
+        ROI & Financial Analytics
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
         Yield analytics, capital collection breakdown, and projected ISA returns in INR.

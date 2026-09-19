@@ -12,7 +12,7 @@ const InvestorPortfolio = () => {
   return (
     <Box maxWidth="lg">
       <Typography variant="h4" sx={{ fontWeight: 800, mb: 1 }}>
-        Active Investment Portfolio (₹ Rupees)
+        Active Investment Portfolio
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
         Overview of all active ISA student contracts and total capital collection in INR.

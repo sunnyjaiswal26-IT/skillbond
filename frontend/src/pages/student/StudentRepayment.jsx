@@ -12,7 +12,7 @@ const StudentRepayment = () => {
   return (
     <Box maxWidth="lg">
       <Typography variant="h4" sx={{ fontWeight: 800, mb: 1 }}>
-        Repayment Schedule & Payment History (₹ Rupees)
+        Repayment Schedule & Payment History
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
         Track your active monthly income share payments once employed.

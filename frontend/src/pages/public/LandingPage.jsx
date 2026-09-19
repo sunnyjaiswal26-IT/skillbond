@@ -45,7 +45,7 @@ const LandingPage = () => {
             />
             <Typography variant="h1" sx={{ fontSize: { xs: '2.5rem', md: '4.5rem' }, fontWeight: 800, mb: 3, lineHeight: 1.1 }}>
               Fund Your Engineering Degree. <br />
-              <span className="gradient-text">Pay Only When You Earn in ₹.</span>
+              <span className="gradient-text">Pay Only When You Earn.</span>
             </Typography>
             <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 760, mx: 'auto', mb: 5, fontWeight: 400 }}>
               SkillBond connects high-potential Maharashtra engineering students with angel investors through transparent Income Share Agreements (ISAs). Zero upfront tuition debt, no compounding interest rates.
@@ -55,7 +55,7 @@ const LandingPage = () => {
                 Apply as Engineering Student
               </Button>
               <Button component={RouterLink} to="/signup?role=investor" variant="outlined" color="primary" size="large" sx={{ py: 1.8, px: 4, fontSize: '1.1rem' }}>
-                Start Investing (₹ INR)
+                Start Investing
               </Button>
             </Stack>
           </motion.div>
@@ -98,7 +98,7 @@ const LandingPage = () => {
           <Grid container spacing={4}>
             {[
               { title: '1. Enter Scores & Submit Proposal', desc: 'Detail your 10th/12th %, MHT-CET, JEE percentiles, CGPA, and branch (CS, IT, AI&DS...) to request ISA tuition support.', icon: <SchoolIcon color="primary" sx={{ fontSize: 40 }} /> },
-              { title: '2. Get Approved & Funded in ₹', desc: 'Admin verifies your academic scores, and angel investors disburse tuition capital in Indian Rupees (₹).', icon: <TrendingUpIcon color="primary" sx={{ fontSize: 40 }} /> },
+              { title: '2. Get Approved & Funded', desc: 'Admin verifies your academic scores, and angel investors disburse tuition capital.', icon: <TrendingUpIcon color="primary" sx={{ fontSize: 40 }} /> },
               { title: '3. Repay Fairly After Placement', desc: 'Share a fixed % of your monthly salary only after securing a placement job above the ₹ 4.0 LPA salary floor.', icon: <SecurityIcon color="primary" sx={{ fontSize: 40 }} /> },
             ].map((step, idx) => (
               <Grid item xs={12} md={4} key={idx}>
@@ -146,7 +146,7 @@ const LandingPage = () => {
           <Grid item xs={12} md={6}>
             <Card sx={{ p: 4, background: 'linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(236,72,153,0.1) 100%)', border: '1px solid rgba(99,102,241,0.3)' }}>
               <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
-                Engineering ISA Contract Terms (₹ INR)
+                Engineering ISA Contract Terms
               </Typography>
               <Stack spacing={2}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

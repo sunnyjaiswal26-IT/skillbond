@@ -65,6 +65,17 @@ public class FundingRequest {
 
     private String adminNotes;
 
+    // AI-POWERED RISK SCORING & CANDIDATE EVALUATION FIELDS
+    private Integer aiRiskScore; // 0 to 100 (higher score = lower risk / stronger candidate)
+
+    private String aiRiskCategory; // "LOW_RISK", "MODERATE_RISK", "HIGH_RISK"
+
+    private String aiApprovalRecommendation; // "HIGHLY_RECOMMENDED", "RECOMMENDED_WITH_TERMS", "REQUIRES_MANUAL_REVIEW"
+
+    private String aiAnalysisSummary; // Natural language AI candidate assessment
+
+    private Double aiProjectedRoi; // Projected Annualized Investor ROI %
+
     @CreatedDate
     private Instant createdAt;
 

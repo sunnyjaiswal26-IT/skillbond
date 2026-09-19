@@ -22,8 +22,9 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import SchoolIcon from '@mui/icons-material/School';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import api from '../../config/axios';
 
 const BrowseStudents = () => {
@@ -64,10 +65,10 @@ const BrowseStudents = () => {
     <Box maxWidth="lg">
       <Box sx={{ mb: 4 }}>
         <Typography variant="h4" sx={{ fontWeight: 800, mb: 1 }}>
-          Browse Approved Engineering Students (Maharashtra)
+          Browse Open Student ISA Proposals
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Review MHT-CET scores, JEE percentiles, 10th/12th marks, CGPA, college placement stats, and fund student ISA proposals in ₹ (Rupees).
+          Evaluate AI Risk Scores, projected investor ROIs, MHT-CET percentiles, CGPA, and disburse capital.
         </Typography>
       </Box>
 
@@ -77,7 +78,7 @@ const BrowseStudents = () => {
       <Paper sx={{ p: 2, mb: 4, borderRadius: 3 }}>
         <TextField
           fullWidth
-          placeholder="Search student by name, college (COEP, VJTI, PICT...), branch, or city..."
+          placeholder="Search by student name, college (COEP, VJTI, PICT...), branch, or city..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           InputProps={{
@@ -99,12 +100,13 @@ const BrowseStudents = () => {
               <Grid item xs={12} md={6} key={req.id}>
                 <Card sx={{ p: 3, borderRadius: 4, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                   <Box>
+                    {/* TOP BAR: NAME & ADMIN APPROVAL */}
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
                       <Typography variant="h6" fontWeight={800}>{req.studentName}</Typography>
                       <Chip icon={<CheckCircleIcon />} label="Admin Approved" color="success" size="small" sx={{ fontWeight: 700 }} />
                     </Box>
 
-                    <Typography variant="body2" color="primary.main" fontWeight={700} sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1 }}>
+                    <Typography variant="body2" color="primary.main" fontWeight={700} sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
                       <SchoolIcon fontSize="small" /> {req.collegeName || req.college}
                     </Typography>
 
@@ -112,24 +114,56 @@ const BrowseStudents = () => {
                       {req.branch || 'Computer Engineering'} — {req.currentYear || 'Third Year'} ({req.degree || 'B.Tech'})
                     </Typography>
 
+                    {/* AI RISK SCORING & CANDIDATE EVALUATION BANNER */}
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        p: 2,
+                        mb: 2,
+                        borderRadius: 3,
+                        background: req.aiRiskScore >= 75
+                          ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(59, 130, 246, 0.12) 100%)'
+                          : 'linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(239, 68, 68, 0.12) 100%)',
+                        border: '1px solid',
+                        borderColor: req.aiRiskScore >= 75 ? 'rgba(16, 185, 129, 0.3)' : 'rgba(245, 158, 11, 0.3)',
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <PsychologyIcon color="primary" fontSize="small" />
+                          <Typography variant="subtitle2" fontWeight={800}>
+                            AI Risk Score: {req.aiRiskScore !== undefined && req.aiRiskScore !== null ? req.aiRiskScore : 'Calculating...'} / 100
+                          </Typography>
+                        </Box>
+                        {req.aiProjectedRoi && (
+                          <Chip
+                            icon={<TrendingUpIcon />}
+                            label={`Projected ROI: ${req.aiProjectedRoi}% / yr`}
+                            color="success"
+                            size="small"
+                            sx={{ fontWeight: 700 }}
+                          />
+                        )}
+                      </Box>
+                      {req.aiAnalysisSummary && (
+                        <Typography variant="caption" color="text.secondary" display="block">
+                          {req.aiAnalysisSummary}
+                        </Typography>
+                      )}
+                    </Paper>
+
                     {/* ACADEMIC SCORES & PERCENTILES BADGES */}
                     <Box sx={{ bgcolor: 'background.default', p: 2, borderRadius: 3, mb: 2 }}>
                       <Typography variant="caption" color="text.secondary" fontWeight={700} display="block" sx={{ mb: 1 }}>
-                        ENTRANCE & ACADEMIC SCORES:
+                        ACADEMIC SCORES & MARKS:
                       </Typography>
                       <Stack direction="row" spacing={1} flexWrap="wrap" gap={1}>
-                        <Chip label={`MHT-CET: ${req.mhtCetPercentile || '99.65'}%ile`} color="warning" size="small" sx={{ fontWeight: 700 }} />
-                        <Chip label={`JEE Main: ${req.jeeMainPercentile || '98.80'}%ile`} color="info" size="small" sx={{ fontWeight: 700 }} />
-                        <Chip label={`CGPA: ${req.currentCgpa || '9.12'} / 10`} color="primary" size="small" sx={{ fontWeight: 700 }} />
-                        <Chip label={`10th: ${req.tenthPercentage || '94.8'}%`} variant="outlined" size="small" />
-                        <Chip label={`12th: ${req.twelfthPercentage || '92.4'}%`} variant="outlined" size="small" />
+                        {req.mhtCetPercentile && <Chip label={`MHT-CET: ${req.mhtCetPercentile}%ile`} color="warning" size="small" sx={{ fontWeight: 700 }} />}
+                        {req.jeeMainPercentile && <Chip label={`JEE Main: ${req.jeeMainPercentile}%ile`} color="info" size="small" sx={{ fontWeight: 700 }} />}
+                        {req.currentCgpa && <Chip label={`CGPA: ${req.currentCgpa} / 10`} color="primary" size="small" sx={{ fontWeight: 700 }} />}
+                        {req.tenthPercentage && <Chip label={`10th: ${req.tenthPercentage}%`} variant="outlined" size="small" />}
+                        {req.twelfthPercentage && <Chip label={`12th: ${req.twelfthPercentage}%`} variant="outlined" size="small" />}
                       </Stack>
-                      
-                      {req.collegeAveragePackage && (
-                        <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1.5, fontWeight: 600 }}>
-                          College Avg Placement Package: ₹ {(req.collegeAveragePackage / 100000).toFixed(1)} Lakhs / yr (LPA)
-                        </Typography>
-                      )}
                     </Box>
 
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
@@ -160,7 +194,7 @@ const BrowseStudents = () => {
                     fullWidth
                     size="large"
                   >
-                    Disburse & Fund (₹ {req.requestedAmount?.toLocaleString()})
+                    Disburse Capital (₹ {req.requestedAmount?.toLocaleString()})
                   </Button>
                 </Card>
               </Grid>
@@ -187,7 +221,7 @@ const BrowseStudents = () => {
               <Typography variant="caption" display="block">Contract Terms:</Typography>
               <Typography variant="body2"><strong>{selectedRequest.isaPercentage}%</strong> of monthly salary for <strong>{selectedRequest.durationMonths} Months</strong>.</Typography>
               <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
-                Salary Floor: ₹ 4.0 LPA (Zero payment if earning below threshold).
+                AI Risk Score: <strong>{selectedRequest.aiRiskScore || 88}/100</strong> (Projected ROI: {selectedRequest.aiProjectedRoi || 13.5}% / yr).
               </Typography>
             </Box>
           </DialogContent>

@@ -20,6 +20,7 @@ public class AdminService {
     private final TransactionRepository transactionRepository;
     private final AuditLogRepository auditLogRepository;
     private final SystemSettingsRepository systemSettingsRepository;
+    private final AiRiskScoringService aiRiskScoringService;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -58,7 +59,14 @@ public class AdminService {
     }
 
     public List<FundingRequest> getAllFundingRequests() {
-        return fundingRequestRepository.findAll();
+        List<FundingRequest> requests = fundingRequestRepository.findAll();
+        for (FundingRequest req : requests) {
+            if (req.getAiRiskScore() == null) {
+                aiRiskScoringService.evaluateAndScoreRequest(req);
+                fundingRequestRepository.save(req);
+            }
+        }
+        return requests;
     }
 
     public FundingRequest updateFundingRequestStatus(String requestId, String status, String adminNotes) {
@@ -74,6 +82,13 @@ public class AdminService {
                 .details("Admin updated ISA proposal #" + requestId + " to status: " + status)
                 .build());
 
+        return fundingRequestRepository.save(request);
+    }
+
+    public FundingRequest recalculateAiRiskScore(String requestId) {
+        FundingRequest request = fundingRequestRepository.findById(requestId)
+                .orElseThrow(() -> new IllegalArgumentException("Funding request not found"));
+        aiRiskScoringService.evaluateAndScoreRequest(request);
         return fundingRequestRepository.save(request);
     }
 

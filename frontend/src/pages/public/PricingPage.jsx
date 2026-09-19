@@ -8,7 +8,7 @@ const PricingPage = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 10 }}>
       <Typography variant="h2" className="gradient-text" sx={{ fontWeight: 800, mb: 2, textAlign: 'center' }}>
-        Transparent Maharashtra Engineering ISA Terms (₹ Rupees)
+        Transparent Maharashtra Engineering ISA Terms
       </Typography>
       <Typography variant="h6" color="text.secondary" sx={{ textAlign: 'center', maxWidth: 700, mx: 'auto', mb: 8 }}>
         No upfront tuition debt, zero compounding interest, and repayment starts only after securing a job above ₹ 4.0 LPA.
@@ -37,7 +37,7 @@ const PricingPage = () => {
                   ))}
                 </List>
                 <Button component={RouterLink} to="/signup?role=student" variant="contained" color="primary" fullWidth size="large">
-                  Apply for Funding (₹ INR)
+                  Apply for Funding
                 </Button>
               </CardContent>
             </Card>

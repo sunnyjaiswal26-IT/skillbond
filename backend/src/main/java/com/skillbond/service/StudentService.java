@@ -22,6 +22,7 @@ public class StudentService {
     private final FundingRequestRepository fundingRequestRepository;
     private final InvestmentRepository investmentRepository;
     private final RepaymentRepository repaymentRepository;
+    private final AiRiskScoringService aiRiskScoringService;
 
     public Student getStudentByUserId(String userId) {
         return studentRepository.findByUserId(userId)
@@ -71,24 +72,36 @@ public class StudentService {
     public FundingRequest createFundingRequest(String userId, String userName, FundingRequest request) {
         Student student = getStudentByUserId(userId);
         
+        // Profile Completion Guard Check
+        if (student.getCollegeName() == null || student.getCollegeName().trim().isEmpty() ||
+            student.getBranch() == null || student.getBranch().trim().isEmpty() ||
+            student.getCurrentCgpa() == null) {
+            throw new IllegalArgumentException("Please complete your Engineering Profile (College, Branch & CGPA) in the 'My Profile' section before submitting an ISA funding proposal.");
+        }
+
         request.setStudentId(student.getId());
         request.setUserId(userId);
         request.setStudentName(userName);
         
-        // Auto-fill academic scores from student profile to request
-        if (request.getCollegeName() == null) request.setCollegeName(student.getCollegeName());
-        if (request.getUniversityName() == null) request.setUniversityName(student.getUniversityName());
-        if (request.getBranch() == null) request.setBranch(student.getBranch());
-        if (request.getDegree() == null) request.setDegree(student.getDegree());
-        if (request.getCurrentYear() == null) request.setCurrentYear(student.getCurrentYear());
-        if (request.getCurrentCgpa() == null) request.setCurrentCgpa(student.getCurrentCgpa());
-        if (request.getMhtCetPercentile() == null) request.setMhtCetPercentile(student.getMhtCetPercentile());
-        if (request.getJeeMainPercentile() == null) request.setJeeMainPercentile(student.getJeeMainPercentile());
-        if (request.getTenthPercentage() == null) request.setTenthPercentage(student.getTenthPercentage());
-        if (request.getTwelfthPercentage() == null) request.setTwelfthPercentage(student.getTwelfthPercentage());
-        if (request.getCollegeAveragePackage() == null) request.setCollegeAveragePackage(student.getCollegeAveragePackage());
+        // Automatically populate all academic credentials directly from the student's profile
+        request.setCollegeName(student.getCollegeName());
+        request.setUniversityName(student.getUniversityName());
+        request.setBranch(student.getBranch());
+        request.setDegree(student.getDegree());
+        request.setCurrentYear(student.getCurrentYear());
+        request.setCurrentCgpa(student.getCurrentCgpa());
+        request.setMhtCetPercentile(student.getMhtCetPercentile());
+        request.setJeeMainPercentile(student.getJeeMainPercentile());
+        request.setTenthPercentage(student.getTenthPercentage());
+        request.setTwelfthPercentage(student.getTwelfthPercentage());
+        request.setCollegeAveragePackage(student.getCollegeAveragePackage());
+        request.setExpectedGraduationYear(student.getExpectedGraduationYear());
 
         request.setStatus("PENDING");
+
+        // Automatically evaluate dynamic AI Risk Score
+        aiRiskScoringService.evaluateAndScoreRequest(request);
+
         return fundingRequestRepository.save(request);
     }
 

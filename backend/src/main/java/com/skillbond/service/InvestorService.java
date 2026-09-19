@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,12 +17,13 @@ public class InvestorService {
     private final FundingRequestRepository fundingRequestRepository;
     private final InvestmentRepository investmentRepository;
     private final TransactionRepository transactionRepository;
+    private final AiRiskScoringService aiRiskScoringService;
 
     public Investor getInvestorByUserId(String userId) {
         return investorRepository.findByUserId(userId)
                 .orElseGet(() -> investorRepository.save(Investor.builder()
                         .userId(userId)
-                        .totalCapitalBudget(50000.0)
+                        .totalCapitalBudget(2500000.0) // ₹ 25 Lakhs
                         .totalCapitalInvested(0.0)
                         .build()));
     }
@@ -45,7 +45,16 @@ public class InvestorService {
     }
 
     public List<FundingRequest> getAllPendingFundingRequests() {
-        return fundingRequestRepository.findByStatus("APPROVED"); // Approved by admin, open for funding
+        List<FundingRequest> approvedRequests = fundingRequestRepository.findByStatus("APPROVED");
+        
+        // Dynamically ensure every approved request has its unique AI Risk Score computed
+        for (FundingRequest request : approvedRequests) {
+            if (request.getAiRiskScore() == null) {
+                aiRiskScoringService.evaluateAndScoreRequest(request);
+                fundingRequestRepository.save(request);
+            }
+        }
+        return approvedRequests;
     }
 
     public Investment fundStudentRequest(String investorUserId, String fundingRequestId) {
@@ -81,7 +90,7 @@ public class InvestorService {
         investor.setTotalCapitalInvested(investor.getTotalCapitalInvested() + fundingRequest.getRequestedAmount());
         investorRepository.save(investor);
 
-        // Record transaction
+        // Record transaction in INR
         Transaction transaction = Transaction.builder()
                 .userId(investorUserId)
                 .type("INVESTMENT_DISBURSEMENT")

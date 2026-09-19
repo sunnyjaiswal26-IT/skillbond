@@ -335,7 +335,7 @@ const StudentProfile = () => {
 
         {/* SECTION 3: PLACEMENT STATS & FINANCIAL METRICS (IN RUPEES ₹) */}
         <Typography variant="h6" fontWeight={800} color="primary" sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-          <CurrencyRupeeIcon /> Placement Stats & Expected Salary (in ₹ Rupees)
+          <CurrencyRupeeIcon /> Placement Stats & Expected Salary
         </Typography>
 
         <Grid container spacing={3} sx={{ mb: 4 }}>
