@@ -8,7 +8,7 @@ spring:
     name: skillbond-backend
   data:
     mongodb:
-      uri: mongodb://${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/${MONGODB_DATABASE:skillbond_db}
+      uri: ${MONGODB_URI:mongodb://sunnyjaiswal2626_db_user:sunny1234@ac-wxwmtre-shard-00-00.ylu1wcn.mongodb.net:27017,ac-wxwmtre-shard-00-01.ylu1wcn.mongodb.net:27017,ac-wxwmtre-shard-00-02.ylu1wcn.mongodb.net:27017/skillbond_db?ssl=true&replicaSet=atlas-12pqmr-shard-0&authSource=admin&retryWrites=true&w=majority}
       auto-index-creation: true
 
 skillbond:
